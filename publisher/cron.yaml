@@ -1,0 +1,4 @@
+cron:
+- description: "Add new task to queue"
+  url: /publishTask
+  schedule: every 1 hours
