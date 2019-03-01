@@ -14,5 +14,11 @@
 # OS X
 .DS_Store
 
+# VS Code
+.vscode
+
 # Go modules
 vendor
+
+# Secrets
+cloud-functions-talk.json

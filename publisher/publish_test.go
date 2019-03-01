@@ -21,3 +21,16 @@ func Test_handlePublishTask(t *testing.T) {
 
 	assert.Equal(t, resp.StatusCode, http.StatusOK)
 }
+
+func Test_handleUploadImage(t *testing.T) {
+	req, err := http.NewRequest("POST", "http://127.0.0.1:8080/uploadImage", nil)
+	req.Header["X-Appengine-Cron"] = []string{"Valid Cron Header"}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+	defer resp.Body.Close()
+
+	assert.Equal(t, resp.StatusCode, http.StatusOK)
+}
