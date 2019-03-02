@@ -9,7 +9,9 @@ import (
 	"log"
 	"net/http"
 
+	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/storage"
+	"github.com/Daniel-Alderman77/go-cloud-functions-talk/publisher/queue"
 )
 
 // createGCSClient instantiates a authenicated GCS client.
@@ -42,6 +44,21 @@ func writeBytes(data []byte, filename, contentType, bucketName string) error {
 	return nil
 }
 
+func postConfirmationMessage(message string) {
+	ctx, client := queue.CreatePubSubClient()
+
+	msg := &pubsub.Message{
+		Data: []byte(message),
+	}
+
+	topic := queue.GetTopic(ctx, client, "pubsub-example")
+
+	if _, err := topic.Publish(ctx, msg).Get(ctx); err != nil {
+		log.Fatalf("Could not publish message: %v", err)
+		return
+	}
+}
+
 // UploadImage extracts image from request and uploads it to bucket.
 func UploadImage(w http.ResponseWriter, r *http.Request) {
 	// Extract the request body for further task details.
@@ -64,4 +81,6 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	postConfirmationMessage("Wrote odie.png")
 }
