@@ -1,7 +1,7 @@
 cron:
 - description: "Add new task to queue"
   url: /publishTask
-  schedule: every 1 hours
+  schedule: every 24 hours
 - description: "Upload image to image-upload function"
   url: /uploadImage
-  schedule: every 1 hours
+  schedule: every 24 hours
